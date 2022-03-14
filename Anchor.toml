@@ -1,7 +1,7 @@
 [features]
 seeds = false
 [programs.localnet]
-grantive = "HNMPfCiDuFHtV5ckwACLzY9MjbpAzrXpbdLgqpa4BHbH"
+grantive = "BydUvE2y1jF3q6CozVgigi2gE7FF3L7tosd9Zmwh9n4n"
 
 [registry]
 url = "https://anchor.projectserum.com"

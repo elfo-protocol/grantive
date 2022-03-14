@@ -6,7 +6,7 @@ pub mod state;
 
 use instructions::*;
 
-declare_id!("HNMPfCiDuFHtV5ckwACLzY9MjbpAzrXpbdLgqpa4BHbH");
+declare_id!("BydUvE2y1jF3q6CozVgigi2gE7FF3L7tosd9Zmwh9n4n");
 
 #[program]
 pub mod grantive {
@@ -20,15 +20,17 @@ pub mod grantive {
         ctx: Context<InitializeCreator>,
         creator_name: String,
         creator_amount: i64,
+        creator_data_ipfs: String
     ) -> Result<()> {
-        instructions::init_creator::handler(ctx, creator_name, creator_amount)
+        instructions::init_creator::handler(ctx, creator_name, creator_amount, creator_data_ipfs)
     }
 
     pub fn create_post(
         ctx: Context<CreatePost>,
-        content: String,
+        title: String,
+        content_ipfs: String,
         subscriber_only: bool,
     ) -> Result<()> {
-        instructions::create_post::handler(ctx, content, subscriber_only)
+        instructions::create_post::handler(ctx,title, content_ipfs, subscriber_only)
     }
 }

@@ -1,8 +1,8 @@
 use crate::state::*;
 use anchor_lang::prelude::*;
-use subrina_protocol::cpi::accounts::CreateSubscriptionPlan;
-use subrina_protocol::program::SubrinaProtocol;
-use subrina_protocol::state::{Protocol, SubscriptionPlan, SubscriptionPlanAuthor};
+use elfo_protocol::cpi::accounts::CreateSubscriptionPlan;
+use elfo_protocol::program::ElfoProtocol;
+use elfo_protocol::state::{Protocol};
 
 use anchor_spl::{
     associated_token::AssociatedToken,
@@ -20,6 +20,14 @@ pub struct InitializeCreator<'info> {
     )]
     pub creator: Box<Account<'info, Creator>>,
 
+    #[account( 
+        mut, 
+        seeds = [b"grantive_state"],
+        bump = grantive_state.bump,
+        constraint = grantive_state.has_already_been_initialized
+    )]
+    pub grantive_state: Box<Account<'info, Grantive>>,
+
     #[account(
         init_if_needed,
         payer = authority,
@@ -32,18 +40,20 @@ pub struct InitializeCreator<'info> {
     pub protocol_state: Box<Account<'info, Protocol>>,
 
     #[account(mut)]
-    pub subscription_plan: Box<Account<'info, SubscriptionPlan>>,
+    /// CHECK is checked on CPI call to elfo protocol
+    pub subscription_plan: UncheckedAccount<'info>,
 
     #[account(mut)]
-    pub subscription_plan_author: Box<Account<'info, SubscriptionPlanAuthor>>,
+   /// CHECK is checked on CPI call to elfo protocol
+    pub subscription_plan_author: UncheckedAccount<'info>,
 
     #[account(mut)]
     pub authority: Signer<'info>,
 
     // #[account(address = mint::USDC @ ErrorCode::InvalidMint)]
     pub mint: Box<Account<'info, Mint>>,
-
-    pub protocol: Program<'info, SubrinaProtocol>,
+    
+    pub protocol: Program<'info, ElfoProtocol>,
     pub associated_token_program: Program<'info, AssociatedToken>,
     pub token_program: Program<'info, Token>,
     pub system_program: Program<'info, System>,
@@ -54,14 +64,17 @@ pub fn handler(
     ctx: Context<InitializeCreator>,
     creator_name: String,
     creator_amount: i64,
+    creator_data_ipfs: String,
 ) -> Result<()> {
     let creator = &mut ctx.accounts.creator;
     creator.bump = *ctx.bumps.get("creator").unwrap();
     creator.has_already_been_initialized = true;
     creator.authority = ctx.accounts.authority.key();
-
+    creator.name = creator_name.clone();
+    creator.data_ipfs = creator_data_ipfs;
+    creator.last_post_index = 0;
+    
     // create subscription plan for creator
-
     let cpi_program = ctx.accounts.protocol.to_account_info();
 
     let cpi_accounts = CreateSubscriptionPlan {
@@ -78,7 +91,7 @@ pub fn handler(
     };
 
     let cpi_ctx = CpiContext::new(cpi_program, cpi_accounts);
-    subrina_protocol::cpi::create_subscription_plan(
+    elfo_protocol::cpi::create_subscription_plan(
         cpi_ctx,
         creator_name,
         creator_amount,
@@ -87,5 +100,8 @@ pub fn handler(
     )?;
 
     creator.subscription_plan = ctx.accounts.subscription_plan.key();
+
+    let state = &mut ctx.accounts.grantive_state;
+    state.creator_accounts.push(creator.key());
     Ok(())
 }
