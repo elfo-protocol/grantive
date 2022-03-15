@@ -7,7 +7,7 @@ pub mod constants;
 
 use instructions::*;
 
-declare_id!("3y7WPpgD3Doo7rubLNB2fP8EscwZib3toWABC4tXwaqz");
+declare_id!("43NuqRW7s1uCCMndhvP6PTmsSohpgFP43g7bJy45Kwqk");
 
 #[program]
 pub mod grantive {

@@ -1,13 +1,16 @@
 [features]
 seeds = false
+
 [programs.localnet]
-grantive = "BydUvE2y1jF3q6CozVgigi2gE7FF3L7tosd9Zmwh9n4n"
+grantive = "43NuqRW7s1uCCMndhvP6PTmsSohpgFP43g7bJy45Kwqk"
+[programs.devnet]
+grantive = "43NuqRW7s1uCCMndhvP6PTmsSohpgFP43g7bJy45Kwqk"
 
 [registry]
 url = "https://anchor.projectserum.com"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "/home/irshad/.config/solana/id.json"
 
 [scripts]
