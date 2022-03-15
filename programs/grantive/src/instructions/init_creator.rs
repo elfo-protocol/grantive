@@ -1,8 +1,8 @@
 use crate::state::*;
 use anchor_lang::prelude::*;
-use elfo_protocol::cpi::accounts::CreateSubscriptionPlan;
-use elfo_protocol::program::ElfoProtocol;
-use elfo_protocol::state::{Protocol};
+use elfo_protocol_core::cpi::accounts::CreateSubscriptionPlan;
+use elfo_protocol_core::program::ElfoProtocol;
+use elfo_protocol_core::state::{Protocol};
 
 use anchor_spl::{
     associated_token::AssociatedToken,
@@ -92,7 +92,7 @@ pub fn handler(
     };
 
     let cpi_ctx = CpiContext::new(cpi_program, cpi_accounts);
-    elfo_protocol::cpi::create_subscription_plan(
+    elfo_protocol_core::cpi::create_subscription_plan(
         cpi_ctx,
         creator_name,
         creator_amount,
