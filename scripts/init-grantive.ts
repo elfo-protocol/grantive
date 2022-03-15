@@ -1,12 +1,10 @@
-import { Program, Provider, Wallet } from "@project-serum/anchor";
+import { Program, Provider } from "@project-serum/anchor";
 import * as anchor from '@project-serum/anchor';
-import { Connection, Keypair, PublicKey, SystemProgram, SYSVAR_RENT_PUBKEY } from "@solana/web3.js";
-import * as fs from 'fs-extra';
-import {homedir} from 'os';
-import {join} from 'path';
-import { ENDPOINT, GRANTIVE_PROGRAM_ID } from "../app/src/lib/constants";
+import { PublicKey, SystemProgram, SYSVAR_RENT_PUBKEY } from "@solana/web3.js";
+import { GRANTIVE_PROGRAM_ID } from "../app/src/lib/constants";
 import { idl } from "../app/src/types/idl";
 import { Grantive } from "../target/types/grantive";
+import { getProvider } from "./root-provider";
 
 const utf8 = anchor.utils.bytes.utf8;
 
@@ -37,19 +35,7 @@ const getProgram = async (provider: Provider): Promise<Program<Grantive>> => {
   return new Program<Grantive>(idl as Grantive, GRANTIVE_PROGRAM_ID, provider);
 }
 
-const getProvider = async (): Promise<Provider> => {
-  return new Provider(
-    new Connection(ENDPOINT),
-    new Wallet(await getKeyPair()),
-    Provider.defaultOptions(),
-  );
-}
 
-const getKeyPair = async (): Promise<Keypair> => {
-  const id = await fs.readJSON(join(homedir(), '.config/solana/id.json'));
-  const bytes = Uint8Array.from(id);
-  return Keypair.fromSecretKey(bytes);
-}
 
 init().then(() => console.log("Done")).catch(e => {
   console.log(e);
