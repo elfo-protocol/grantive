@@ -3,7 +3,7 @@ import './PostEditor.css';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import ReactQuill from 'react-quill';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
@@ -13,15 +13,20 @@ import { createPost } from '../../lib/grantive/post';
 import { AnchorWallet, useAnchorWallet } from '@solana/wallet-adapter-react';
 import { toast } from 'react-toastify';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { useNavigate } from 'react-router-dom';
+import RefreshContext from '../../context';
+import { useNavigate, useParams } from 'react-router-dom';
+import { SINGLE_CREATOR } from '../../routes/routes';
 
 const PostEditor = () => {
-    const wallet = useAnchorWallet();
+    const params = useParams();
+    const creatorId = params.creatorId;
     const navigate = useNavigate();
+    const wallet = useAnchorWallet();
     const [publishing, setPublishing] = useState(false);
     const [title, setTitle] = useState("What's a good title?");
     const [content, setContent] = useState('This is good content');
     const [subscriberOnly, setSubscriberOnly] = useState(false);
+    const { refresh } = useContext(RefreshContext);
 
     const handlePublish = () => {
         setPublishing(true);
@@ -30,7 +35,8 @@ const PostEditor = () => {
                 toast('Post created: '.concat(post), {
                     type: 'success',
                 });
-                window.location.reload();
+                refresh();
+                navigate(SINGLE_CREATOR.concat(creatorId as string));
             })
             .catch((e) => {
                 toast('An error occurred.', {

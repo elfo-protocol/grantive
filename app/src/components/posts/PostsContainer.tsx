@@ -1,23 +1,74 @@
-import { PostData } from '../../lib/grantive/post';
-import { FC } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import PostList from './PostList';
 import Paper from '@mui/material/Paper';
-import PostNewForm from './PostNewForm';
-import { CreatorAccount } from '../../lib/grantive/creator';
+import { useCreator, useIsOwner, usePosts } from '../../hooks/useHooks';
+import { useNavigate, useParams } from 'react-router-dom';
+import Button from '@mui/material/Button';
+import { SINGLE_CREATOR } from '../../routes/routes';
+import CircularProgress from '@mui/material/CircularProgress';
 
-interface IProps {
-    isOwner: boolean;
-    creator: CreatorAccount;
-    posts: PostData[];
-}
-
-const PostsContainer: FC<IProps> = ({ isOwner, creator, posts }) => {
+const PostsContainer = () => {
+    const params = useParams();
+    const creatorId = params.creatorId;
+    const [creator] = useCreator(creatorId as string);
+    const [isOwner, isOwnerLoading] = useIsOwner(creator ? creator.key : '');
+    const posts = usePosts(creatorId as string);
+    const navigate = useNavigate();
     return (
         <Box>
-            {isOwner && <PostNewForm />}
-            {posts.length === 0 && (
+            {isOwner && (
+                <Button
+                    variant={'contained'}
+                    size={'large'}
+                    onClick={() =>
+                        navigate(
+                            SINGLE_CREATOR.concat(creatorId as string).concat(
+                                '/add-post'
+                            )
+                        )
+                    }
+                    color={'primary'}
+                    sx={{
+                        mb: {
+                            xs: 1,
+                            sm: 2,
+                        },
+                    }}
+                >
+                    Add post
+                </Button>
+            )}
+            {!posts && (
+                <Paper
+                    sx={{
+                        px: {
+                            xs: 2,
+                            sm: 5,
+                        },
+                        py: {
+                            xs: 2,
+                            sm: 5,
+                        },
+                    }}
+                >
+                    <Box sx={{ display: 'flex' }}>
+                        <Typography
+                            sx={{
+                                mr: {
+                                    xs: 1,
+                                    sm: 2,
+                                },
+                            }}
+                            variant={'h5'}
+                        >
+                            Loading
+                        </Typography>{' '}
+                        <CircularProgress />
+                    </Box>
+                </Paper>
+            )}
+            {posts && posts.length === 0 && (
                 <Paper
                     sx={{
                         px: {
@@ -33,12 +84,12 @@ const PostsContainer: FC<IProps> = ({ isOwner, creator, posts }) => {
                     <Typography variant={'h5'}>
                         {isOwner
                             ? "You haven't"
-                            : creator.name.concat("hasn't")}{' '}
+                            : creator?.name.concat("hasn't")}{' '}
                         made any posts yet.
                     </Typography>
                 </Paper>
             )}
-            <PostList isOwner={isOwner} creator={creator} posts={posts} />
+            <PostList />
         </Box>
     );
 };

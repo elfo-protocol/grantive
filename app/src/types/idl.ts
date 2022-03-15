@@ -38,7 +38,7 @@ export const idl = {
                 },
                 {
                     name: 'grantiveState',
-                    isMut: false,
+                    isMut: true,
                     isSigner: false,
                 },
                 {

@@ -19,7 +19,7 @@ const Home = () => {
         const creatorAddress = getCreatorAddress(wallet.publicKey.toBase58());
         getCreator(wallet, creatorAddress).then((creator) => {
             if (creator) {
-                navigate(SINGLE_CREATOR.concat(creator.pda), {
+                navigate(SINGLE_CREATOR.concat(creator.key), {
                     state: {
                         creatorAccount: creator,
                     },

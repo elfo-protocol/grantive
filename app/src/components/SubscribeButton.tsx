@@ -1,6 +1,5 @@
-import { CreatorAccount } from '../lib/grantive/creator';
 import Button from '@mui/material/Button';
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SubscriptionPlan } from '@elfo/sdk';
 import {
     getSubscriptionPlan,
@@ -10,19 +9,22 @@ import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import { BN } from '@project-serum/anchor';
 import { toast } from 'react-toastify';
 import LoadingButton from '@mui/lab/LoadingButton';
+import { useCreator } from '../hooks/useHooks';
+import { useParams } from 'react-router-dom';
 
-interface IProps {
-    creator: CreatorAccount;
-}
-
-const SubscribeButton: FC<IProps> = ({ creator }) => {
+const SubscribeButton = () => {
     const wallet = useAnchorWallet();
     const [amount, setAmount] = useState('');
     const [subscriptionPlan, setSubscriptionPlan] = useState<
         SubscriptionPlan | undefined
     >(undefined);
+
+    const params = useParams();
+    const creatorId = params.creatorId;
+    const [creator] = useCreator(creatorId as string);
+
     useEffect(() => {
-        if (!wallet) return;
+        if (!wallet || !creator) return;
         getSubscriptionPlan(creator, wallet).then((plan) => {
             setSubscriptionPlan(plan);
             setAmount(
@@ -36,7 +38,7 @@ const SubscribeButton: FC<IProps> = ({ creator }) => {
     const [loading, setLoading] = useState(false);
 
     const handleSubscribe = async () => {
-        if (!wallet) return;
+        if (!wallet || !creator) return;
         let plan = subscriptionPlan;
         setLoading(true);
         try {

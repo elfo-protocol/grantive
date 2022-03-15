@@ -1177,10 +1177,10 @@
   dependencies:
     "@date-io/core" "^2.13.1"
 
-"@elfo/sdk@^0.1.6":
-  version "0.1.6"
-  resolved "http://localhost:4873/@elfo%2fsdk/-/sdk-0.1.6.tgz#b16b1046f14d282b294f1a9685ba2fa201ccb48b"
-  integrity sha512-GmmaceHSzMXZnKHB2fCWaAEFInLWcUkf0xwQaXlGkA5notWm5psGm5o787cbt/n866/1XhEQ1cTJqFTSswDGcw==
+"@elfo/sdk@^0.3.5":
+  version "0.3.5"
+  resolved "http://localhost:4873/@elfo%2fsdk/-/sdk-0.3.5.tgz#d5e4f14079679c273f4ff6e096699bc90c1f2514"
+  integrity sha512-yZJlSnN3ECR1gxbrnQatS0EP2UFW2VF3/kXQNSsAC1QHn3FTi3QAy7X0l25Z60VGAVtRoKo0NYAsqT8UONjxag==
   dependencies:
     "@project-serum/anchor" "^0.22.1"
     "@solana/spl-token" "^0.2.0"

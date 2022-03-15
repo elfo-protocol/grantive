@@ -32,7 +32,6 @@ export interface CreatorAccount {
     name: string;
     description: string;
     imageDataURI: string;
-    pda: string;
     hasAlreadyBeenInitialized: boolean;
     authority: string;
     subscriptionPlan: string;
@@ -48,13 +47,13 @@ export interface CreatorData {
 export const getCreator = async (
     wallet: AnchorWallet,
     creatorPublicKey: string
-): Promise<CreatorAccount | null> => {
+): Promise<CreatorAccount | undefined> => {
     const program = getProgram(wallet);
 
     const creator = await program.account.creator.fetchNullable(
         creatorPublicKey
     );
-    if (!creator) return null;
+    if (!creator) return undefined;
 
     const {
         name,
@@ -74,7 +73,6 @@ export const getCreator = async (
         description: data.description,
         imageDataURI: data.imageDataURI,
         hasAlreadyBeenInitialized,
-        pda: creatorPublicKey,
         authority: authority.toBase58(),
         subscriptionPlan: subscriptionPlan.toBase58(),
         posts: posts.map((p) => p.toBase58()),
@@ -86,7 +84,7 @@ export const initCreator = async (
     creatorName: string,
     description: string,
     amount: number,
-    image: File,
+    image: File | string,
     wallet: AnchorWallet
 ): Promise<string> => {
     const program = await getProgram(wallet);
@@ -105,7 +103,8 @@ export const initCreator = async (
 
     const dataIpfs = await ipfsService.saveCreatorData({
         description,
-        imageDataURI: await file2Base64(image),
+        imageDataURI:
+            typeof image === 'string' ? image : await file2Base64(image),
     });
 
     const ix = program.instruction.initCreator(

@@ -38,7 +38,7 @@ export type Grantive = {
                 },
                 {
                     name: 'grantiveState';
-                    isMut: false;
+                    isMut: true;
                     isSigner: false;
                 },
                 {
@@ -321,7 +321,7 @@ export const IDL: Grantive = {
                 },
                 {
                     name: 'grantiveState',
-                    isMut: false,
+                    isMut: true,
                     isSigner: false,
                 },
                 {

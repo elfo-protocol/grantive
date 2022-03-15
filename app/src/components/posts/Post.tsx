@@ -6,17 +6,14 @@ import { PostData } from '../../lib/grantive/post';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import SubscribeButton from '../SubscribeButton';
-import { CreatorAccount } from '../../lib/grantive/creator';
 
 const HtmlToReactParser = require('html-to-react').Parser;
 
 type IProps = {
     post: PostData;
-    creator: CreatorAccount;
-    isOwner: boolean;
 };
 
-const Post: FC<IProps> = ({ post, creator }) => {
+const Post: FC<IProps> = ({ post }) => {
     const parser = useMemo(() => new HtmlToReactParser(), []);
     const [body, setBody] = useState<ReactNode | null>(null);
     useEffect(() => {
@@ -43,7 +40,7 @@ const Post: FC<IProps> = ({ post, creator }) => {
                         <Typography variant={'h6'}>
                             Unlock this content by becoming a subscriber
                         </Typography>
-                        <SubscribeButton creator={creator} />
+                        <SubscribeButton />
                     </Grid>
                 </Grid>
             );

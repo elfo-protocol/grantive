@@ -2,15 +2,15 @@ import { create, IPFSHTTPClient } from 'ipfs-http-client';
 import { CreatorData } from './creator';
 import axios from 'axios';
 
-const IPFS_URL = 'https://ipfs.infura.io:5001';
-const IPFS_PATH = 'ipfs';
+const IPFS_URL = 'http://localhost:5001';
+// const IPFS_PATH = 'ipfs';
 
-const authHeader = 'Basic '.concat(
-    new Buffer([
-        process.env.REACT_APP_INFURA_IPFS_PROJECT,
-        process.env.REACT_APP_INFURA_IPFS_SECRET,
-    ]).toString('base64')
-);
+// const authHeader = 'Basic '.concat(
+//     new Buffer([
+//         process.env.REACT_APP_INFURA_IPFS_PROJECT,
+//         process.env.REACT_APP_INFURA_IPFS_SECRET,
+//     ]).toString('base64')
+// );
 
 class IpfsService {
     client: IPFSHTTPClient;
@@ -19,9 +19,6 @@ class IpfsService {
     constructor() {
         this.client = create({
             url: IPFS_URL,
-            headers: {
-                Authorization: authHeader,
-            },
         });
         this.decorder = new TextDecoder();
     }
@@ -35,11 +32,7 @@ class IpfsService {
         const result = await axios.post(
             IPFS_URL.concat('/api/v0/cat').concat('?arg=').concat(path),
             null,
-            {
-                headers: {
-                    Authorization: authHeader,
-                },
-            }
+            {}
         );
         return result.data as CreatorData;
     }
@@ -53,11 +46,7 @@ class IpfsService {
         const result = await axios.post(
             IPFS_URL.concat('/api/v0/cat').concat('?arg=').concat(path),
             null,
-            {
-                headers: {
-                    Authorization: authHeader,
-                },
-            }
+            {}
         );
         return result.data as string;
     }

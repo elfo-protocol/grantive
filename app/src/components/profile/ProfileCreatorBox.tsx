@@ -10,9 +10,9 @@ import Skeleton from '@mui/material/Skeleton';
 import { useNavigate } from 'react-router-dom';
 import { SINGLE_CREATOR } from '../../routes/routes';
 
-const CreatorBoxComponent: FC<{ creator: CreatorAccount | undefined }> = ({
-    creator,
-}) => {
+const ProfileCreatorBoxComponent: FC<{
+    creator: CreatorAccount | undefined;
+}> = ({ creator }) => {
     const navigate = useNavigate();
     return (
         <Paper>
@@ -51,7 +51,7 @@ interface IProps {
     creatorId: string;
 }
 
-const CreatorBox: FC<IProps> = ({ creatorId }) => {
+const ProfileCreatorBox: FC<IProps> = ({ creatorId }) => {
     const [loading, setLoading] = useState(true);
     const [creator, setCreator] = useState<CreatorAccount | undefined>(
         undefined
@@ -73,7 +73,7 @@ const CreatorBox: FC<IProps> = ({ creatorId }) => {
     if (loading || !creator) {
         return <Skeleton height={350} width={500} />;
     }
-    return <CreatorBoxComponent creator={creator} />;
+    return <ProfileCreatorBoxComponent creator={creator} />;
 };
 
-export default CreatorBox;
+export default ProfileCreatorBox;
