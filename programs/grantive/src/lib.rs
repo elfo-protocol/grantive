@@ -3,10 +3,11 @@ use anchor_lang::prelude::*;
 pub mod error;
 pub mod instructions;
 pub mod state;
+pub mod constants;
 
 use instructions::*;
 
-declare_id!("BydUvE2y1jF3q6CozVgigi2gE7FF3L7tosd9Zmwh9n4n");
+declare_id!("3y7WPpgD3Doo7rubLNB2fP8EscwZib3toWABC4tXwaqz");
 
 #[program]
 pub mod grantive {

@@ -4,7 +4,7 @@ use crate::state::*;
 use anchor_lang::prelude::*;
 
 #[derive(Accounts)]
-#[instruction(title: String)]
+#[instruction(title: String, content_ipfs: String)]
 pub struct CreatePost<'info> {
     #[account(mut)]
     pub authority: Signer<'info>,
@@ -14,7 +14,7 @@ pub struct CreatePost<'info> {
         payer = authority,
         seeds = [b"post", creator.key().as_ref(), (creator.last_post_index + 1).to_string().as_ref()],
         bump,
-        space=8+2000 //todo: calculate correct space
+        space= CreatorPost::space(&title, &content_ipfs)
     )]
     pub post: Box<Account<'info, CreatorPost>>,
 

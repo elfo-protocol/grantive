@@ -10,13 +10,14 @@ use anchor_spl::{
 };
 
 #[derive(Accounts)]
+#[instruction(name: String, creator_data_ipfs: String)]
 pub struct InitializeCreator<'info> {
     #[account(
         init,
         payer = authority,
         seeds = [b"creator", authority.key().as_ref()],
         bump,
-        space=8+1000 //todo: calculate correct space
+        space= Creator::space(&name, &creator_data_ipfs)
     )]
     pub creator: Box<Account<'info, Creator>>,
 

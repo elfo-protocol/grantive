@@ -8,7 +8,7 @@ pub struct Initialize<'info> {
         payer = authority,
         seeds = [b"grantive_state"],
         bump,
-        space=8+1000 //todo: calculate correct space
+        space= Grantive::space()
     )]
     pub grantive_state: Box<Account<'info, Grantive>>,
 
