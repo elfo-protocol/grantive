@@ -107,7 +107,7 @@ export const idl = {
                     type: 'i64',
                 },
                 {
-                    name: 'creatorDataIpfs',
+                    name: 'creatorDataId',
                     type: 'string',
                 },
             ],
@@ -152,7 +152,7 @@ export const idl = {
                     type: 'string',
                 },
                 {
-                    name: 'contentIpfs',
+                    name: 'contentData',
                     type: 'string',
                 },
                 {
@@ -211,7 +211,7 @@ export const idl = {
                         type: 'string',
                     },
                     {
-                        name: 'dataIpfs',
+                        name: 'dataId',
                         type: 'string',
                     },
                     {
@@ -257,7 +257,7 @@ export const idl = {
                         type: 'string',
                     },
                     {
-                        name: 'contentIpfs',
+                        name: 'contentData',
                         type: 'string',
                     },
                     {

@@ -21,7 +21,7 @@ import {
     TOKEN_PROGRAM_ID,
 } from '@solana/spl-token';
 import { file2Base64 } from '../utils/img-utils';
-import ipfsService from './ipfs';
+import s3 from './s3';
 
 const utf8 = anchor.utils.bytes.utf8;
 const { PublicKey, SystemProgram, SYSVAR_RENT_PUBKEY, Transaction } =
@@ -57,7 +57,7 @@ export const getCreator = async (
 
     const {
         name,
-        dataIpfs,
+        dataId,
         hasAlreadyBeenInitialized,
         authority,
         subscriptionPlan,
@@ -65,7 +65,7 @@ export const getCreator = async (
         lastPostIndex,
     } = creator;
 
-    const data = (await ipfsService.getCreatorData(dataIpfs)) as CreatorData;
+    const data = (await s3.getCreatorData(dataId)) as CreatorData;
 
     return {
         key: creatorPublicKey,
@@ -101,7 +101,7 @@ export const initCreator = async (
         SubscriptionPlan.address(creatorName, subscriptionPlanAuthor.toBase58())
     );
 
-    const dataIpfs = await ipfsService.saveCreatorData({
+    const dataId = await s3.saveCreatorData({
         description,
         imageDataURI:
             typeof image === 'string' ? image : await file2Base64(image),
@@ -110,7 +110,7 @@ export const initCreator = async (
     const ix = program.instruction.initCreator(
         creatorName,
         new BN(amount * Math.pow(10, MINT_DECIMALS)),
-        dataIpfs,
+        dataId,
         {
             accounts: {
                 grantiveState: GRANTIVE_STATE,

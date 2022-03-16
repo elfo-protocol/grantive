@@ -107,7 +107,7 @@ export type Grantive = {
                     type: 'i64';
                 },
                 {
-                    name: 'creatorDataIpfs';
+                    name: 'creatorDataId';
                     type: 'string';
                 }
             ];
@@ -152,7 +152,7 @@ export type Grantive = {
                     type: 'string';
                 },
                 {
-                    name: 'contentIpfs';
+                    name: 'contentData';
                     type: 'string';
                 },
                 {
@@ -211,7 +211,7 @@ export type Grantive = {
                         type: 'string';
                     },
                     {
-                        name: 'dataIpfs';
+                        name: 'dataId';
                         type: 'string';
                     },
                     {
@@ -257,7 +257,7 @@ export type Grantive = {
                         type: 'string';
                     },
                     {
-                        name: 'contentIpfs';
+                        name: 'contentData';
                         type: 'string';
                     },
                     {
@@ -390,7 +390,7 @@ export const IDL: Grantive = {
                     type: 'i64',
                 },
                 {
-                    name: 'creatorDataIpfs',
+                    name: 'creatorDataId',
                     type: 'string',
                 },
             ],
@@ -435,7 +435,7 @@ export const IDL: Grantive = {
                     type: 'string',
                 },
                 {
-                    name: 'contentIpfs',
+                    name: 'contentData',
                     type: 'string',
                 },
                 {
@@ -494,7 +494,7 @@ export const IDL: Grantive = {
                         type: 'string',
                     },
                     {
-                        name: 'dataIpfs',
+                        name: 'dataId',
                         type: 'string',
                     },
                     {
@@ -540,7 +540,7 @@ export const IDL: Grantive = {
                         type: 'string',
                     },
                     {
-                        name: 'contentIpfs',
+                        name: 'contentData',
                         type: 'string',
                     },
                     {

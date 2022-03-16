@@ -4,7 +4,7 @@ import { Grantive } from '../../types/grantive';
 import { AnchorWallet } from '@solana/wallet-adapter-react';
 import { getProgram } from '../connection/program';
 import { CreatorAccount, getCreator, getCreatorAddress } from './creator';
-import ipfsService from './ipfs';
+import s3 from './s3';
 import { GRANTIVE_PROGRAM_ID } from '../constants';
 
 const {
@@ -29,13 +29,19 @@ export interface PostData {
     index: number;
 }
 
+export interface PostContentSerializable {
+    body: string;
+}
+
 export const createPost = async (
     title: string,
     contentHtml: string,
     subscriber_only: boolean,
     wallet: AnchorWallet
 ): Promise<string> => {
-    const ipfsPostData: string = await ipfsService.savePostData(contentHtml);
+    const postData: string = await s3.savePostData({
+        body: contentHtml,
+    });
     const program = await getProgram(wallet);
 
     const creatorAddress = getCreatorAddress(wallet.publicKey.toBase58());
@@ -55,7 +61,7 @@ export const createPost = async (
 
     const ix = await program.instruction.createPost(
         title,
-        ipfsPostData,
+        postData,
         subscriber_only,
         {
             accounts: {
@@ -113,7 +119,7 @@ const getPost = async (
         title,
         publishedOn,
         index,
-        contentIpfs,
+        contentData,
         subscriberOnly,
     } = await program?.account.creatorPost.fetch(postPublicKey);
 
@@ -132,7 +138,8 @@ const getPost = async (
     }
 
     if (retrieveActualContent) {
-        content = await ipfsService.getPostData(contentIpfs);
+        const { body } = await s3.getPostData(contentData);
+        content = body;
     }
 
     return {

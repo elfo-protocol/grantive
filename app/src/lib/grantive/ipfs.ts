@@ -2,7 +2,7 @@ import { create, IPFSHTTPClient } from 'ipfs-http-client';
 import { CreatorData } from './creator';
 import axios from 'axios';
 
-const IPFS_URL = 'http://localhost:5001';
+const IPFS_URL = 'https://grantive.elfo.cc:5001';
 // const IPFS_PATH = 'ipfs';
 
 // const authHeader = 'Basic '.concat(

@@ -2,9 +2,9 @@
 seeds = false
 
 [programs.localnet]
-grantive = "43NuqRW7s1uCCMndhvP6PTmsSohpgFP43g7bJy45Kwqk"
+grantive = "HmaVKgMcqV6bi26kNo5xa9K8bywft2ojFnXCpf5zrQkx"
 [programs.devnet]
-grantive = "43NuqRW7s1uCCMndhvP6PTmsSohpgFP43g7bJy45Kwqk"
+grantive = "HmaVKgMcqV6bi26kNo5xa9K8bywft2ojFnXCpf5zrQkx"
 
 [registry]
 url = "https://anchor.projectserum.com"

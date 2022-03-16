@@ -4,7 +4,7 @@ use crate::state::*;
 use anchor_lang::prelude::*;
 
 #[derive(Accounts)]
-#[instruction(title: String, content_ipfs: String)]
+#[instruction(title: String, content_data: String)]
 pub struct CreatePost<'info> {
     #[account(mut)]
     pub authority: Signer<'info>,
@@ -14,7 +14,7 @@ pub struct CreatePost<'info> {
         payer = authority,
         seeds = [b"post", creator.key().as_ref(), (creator.last_post_index + 1).to_string().as_ref()],
         bump,
-        space= CreatorPost::space(&title, &content_ipfs)
+        space= CreatorPost::space(&title, &content_data)
     )]
     pub post: Box<Account<'info, CreatorPost>>,
 
@@ -32,13 +32,13 @@ pub struct CreatePost<'info> {
     pub clock: Sysvar<'info, Clock>,
 }
 
-pub fn handler(ctx: Context<CreatePost>,title: String, content_ipfs: String, subscriber_only: bool) -> Result<()> {
+pub fn handler(ctx: Context<CreatePost>,title: String, content_data: String, subscriber_only: bool) -> Result<()> {
     let creator = &mut ctx.accounts.creator;
     let post = &mut ctx.accounts.post;
     post.bump = *ctx.bumps.get("post").unwrap();
     post.has_already_been_initialized = true;
     post.title = title;
-    post.content_ipfs = content_ipfs;
+    post.content_data = content_data;
     post.creator = creator.key();
     post.subscriber_only = subscriber_only;
 

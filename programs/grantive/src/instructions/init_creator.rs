@@ -10,14 +10,14 @@ use anchor_spl::{
 };
 
 #[derive(Accounts)]
-#[instruction(name: String, creator_data_ipfs: String)]
+#[instruction(creator_name: String, creator_amount: i64, creator_data_id: String)]
 pub struct InitializeCreator<'info> {
     #[account(
         init,
         payer = authority,
         seeds = [b"creator", authority.key().as_ref()],
         bump,
-        space= Creator::space(&name, &creator_data_ipfs)
+        space= Creator::space(&creator_name, &creator_data_id)
     )]
     pub creator: Box<Account<'info, Creator>>,
 
@@ -65,14 +65,14 @@ pub fn handler(
     ctx: Context<InitializeCreator>,
     creator_name: String,
     creator_amount: i64,
-    creator_data_ipfs: String,
+    creator_data_id: String,
 ) -> Result<()> {
     let creator = &mut ctx.accounts.creator;
     creator.bump = *ctx.bumps.get("creator").unwrap();
     creator.has_already_been_initialized = true;
     creator.authority = ctx.accounts.authority.key();
     creator.name = creator_name.clone();
-    creator.data_ipfs = creator_data_ipfs;
+    creator.data_id = creator_data_id;
     creator.last_post_index = 0;
     
     // create subscription plan for creator
