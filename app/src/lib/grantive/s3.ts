@@ -7,7 +7,7 @@ class S3Service {
     cdn: string;
 
     constructor() {
-        this.url = 'https://grantive.elfo.cc/:5000';
+        this.url = 'https://grantive.elfo.cc:5000';
         this.cdn = 'https://grantive-cdn.elfo.cc/';
     }
 

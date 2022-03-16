@@ -13,6 +13,7 @@ export const isSubscriber = async (
     query: string,
     wallet: AnchorWallet
 ) => {
+    if (creator.authority === wallet.publicKey.toBase58()) return true;
     const subscriberAddress = Subscriber.address(query);
     const subscriptionAddress = Subscription.address(
         subscriberAddress,
